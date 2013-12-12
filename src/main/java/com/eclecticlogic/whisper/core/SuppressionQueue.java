@@ -41,15 +41,9 @@ public class SuppressionQueue<E> extends LinkedList<Message<E>> implements Queue
 
     @Override
     public boolean add(Message<E> e) {
-        return offer(e);
-    }
-
-
-    @Override
-    public boolean offer(Message<E> e) {
         // Remove messages that are older than suppression time.
         suppressExpiredMessages();
-        return super.offer(e);
+        return super.add(e);
     }
 
 

@@ -85,6 +85,7 @@ public class WhisperManager<E> extends TimerTask {
                 muffler = temp;
             }
         }
+        muffler.log(message);
     }
 
 

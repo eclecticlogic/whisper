@@ -31,6 +31,7 @@ import ch.qos.logback.core.spi.AppenderAttachableImpl;
 public abstract class AbstractWhisperAppender extends AppenderBase<ILoggingEvent> implements
         AppenderAttachable<ILoggingEvent> {
 
+    protected static final String MDC_DIGEST_SUBJECT = "whisper.digest.subject";
     private AppenderAttachableImpl<ILoggingEvent> appenderAttachableDelegate = new AppenderAttachableImpl<ILoggingEvent>();
 
 

@@ -45,17 +45,19 @@ public class Muffler<E> {
     
 
     public void log(Message<E> message) {
-        if (inSuppression
-                && lastMessage.get().getMessageAge() > manager.getSuppressionExpirationTime()) {
-            // Suppression ends
-            inSuppression = false;
-            manager.remove(this);
-            // Re-attempt to log this.
-            manager.log(message);
-        } else if (inSuppression) {
-            messagesSinceSuppressionStart.incrementAndGet();
-            messagesSinceLastDigest.incrementAndGet();
-            lastMessage.set(message);
+        if (inSuppression) {
+            Message<E> msg = lastMessage.get();
+            if (msg != null && lastMessage.get().getMessageAge() > manager.getSuppressionExpirationTime()) {
+                // Suppression ends
+                inSuppression = false;
+                manager.remove(this);
+                // Re-attempt to log this.
+                manager.log(message);
+            } else {
+                messagesSinceSuppressionStart.incrementAndGet();
+                messagesSinceLastDigest.incrementAndGet();
+                lastMessage.set(message);
+            }
         } else {
             queue.offer(message);
             if (queue.size() > manager.getSuppressionOnMessagesCount()) {

@@ -36,21 +36,21 @@ import com.eclecticlogic.whisper.spi.MessageWriter;
  */
 public class WhisperAppender extends AbstractWhisperAppender implements MessageWriter<ILoggingEvent> {
 
-    private static final String MDC_DIGEST_SUBJECT = "digestSubject";
+    
     private WhisperManager<ILoggingEvent> whisperManager;
     private String digestLoggerName;
-    private String suppressionAfter;
+    private String suppressAfter;
     private String expireAfter;
     private String digestFrequency;
 
 
-    public String getSuppressionAfter() {
-        return suppressionAfter;
+    public String getSuppressAfter() {
+        return suppressAfter;
     }
 
 
-    public void setSuppressionAfter(String suppressionAfter) {
-        this.suppressionAfter = suppressionAfter;
+    public void setSuppressAfter(String suppressionAfter) {
+        this.suppressAfter = suppressionAfter;
     }
 
 
@@ -86,7 +86,8 @@ public class WhisperAppender extends AbstractWhisperAppender implements MessageW
 
     @Override
     protected void append(ILoggingEvent event) {
-
+        LogbackMessage message = new LogbackMessage(event);
+        whisperManager.log(message);
     }
 
 
@@ -109,7 +110,7 @@ public class WhisperAppender extends AbstractWhisperAppender implements MessageW
     @Override
     public void start() {
         super.start();
-        whisperManager = new WhisperManager<ILoggingEvent>(this, getSuppressionAfter(), getExpireAfter());
+        whisperManager = new WhisperManager<ILoggingEvent>(this, getSuppressAfter(), getExpireAfter());
         whisperManager.start(ParameterUtil.digestFrequencyToMillis(getDigestFrequency()));
     }
 

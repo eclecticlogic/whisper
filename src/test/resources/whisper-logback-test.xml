@@ -1,0 +1,36 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - Howdy -  %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="digest" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %X{whisper.digest.subject} -  %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="whisper" class="com.eclecticlogic.whisper.logback.WhisperAppender">
+  	<digestLoggerName>digest.appender.logger</digestLoggerName>
+  	<suppressAfter>3 in 5 minutes</suppressAfter>
+  	<expireAfter>4 minutes</expireAfter>
+  	<digestFrequency>1 minute</digestFrequency>
+  	<appender-ref ref="STDOUT" />
+  </appender>
+
+  <logger name="digest.appender.logger" level="debug" additivity="false">
+  	<appender-ref ref="digest" />
+  </logger>
+  
+  <root level="debug">
+    <appender-ref ref="whisper" />
+  </root>
+  
+  
+</configuration>

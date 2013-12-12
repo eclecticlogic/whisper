@@ -36,9 +36,8 @@ public class Digest {
     public String getSubject() {
         if (digestMessages.size() == 1) {
             DigestMessage dm = digestMessages.get(0);
-            MessageFormat.format("[{0}:{1}] {2}", dm.getMessagesSinceLastDigest(), dm.getMessagesSinceStart(),
+            return MessageFormat.format("[{0}:{1}] {2}", dm.getMessagesSinceLastDigest(), dm.getMessagesSinceStart(),
                     dm.getMessage());
-            return String.format("[%i] %s", digestMessages);
         } else {
             int sum = 0;
             for (DigestMessage dm : digestMessages) {
