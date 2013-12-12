@@ -1,0 +1,9 @@
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Main" verbose="1">
+	<test name="whisper">
+		<packages>
+			<package name="com.eclecticlogic.whisper.core" />
+		</packages>
+	</test>
+</suite> 
