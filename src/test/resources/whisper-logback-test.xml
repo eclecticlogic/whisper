@@ -29,6 +29,10 @@
   </logger>
   
   <root level="debug">
+    <appender-ref ref="STDOUT" />
+  </root>
+  
+  <root level="error">
     <appender-ref ref="whisper" />
   </root>
   
