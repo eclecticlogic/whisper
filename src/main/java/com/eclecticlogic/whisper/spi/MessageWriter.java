@@ -20,7 +20,7 @@ import com.eclecticlogic.whisper.core.Digest;
 
 
 /**
- * @author Karthik 
+ * @author Karthik Abram 
  *
  */
 public interface MessageWriter<E> {

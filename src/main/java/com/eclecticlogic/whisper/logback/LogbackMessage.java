@@ -24,11 +24,10 @@ import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import com.eclecticlogic.whisper.spi.AbstractMessage;
 
 /**
- * @author Karthik & Lydia.
+ * @author Karthik Abram 
  *
  */
 public class LogbackMessage extends AbstractMessage<ILoggingEvent> {
-
 
     public LogbackMessage(ILoggingEvent event) {
         super(event);
@@ -42,16 +41,23 @@ public class LogbackMessage extends AbstractMessage<ILoggingEvent> {
 
 
     @Override
+    public long getMessageTime() {
+        return getEvent().getTimeStamp();
+    }
+
+
+    @Override
     public String getCanonicalMessage() {
         return getEvent().getMessage();
     }
 
-    
+
     @Override
     public String getMessage() {
         return getEvent().getFormattedMessage();
     }
-    
+
+
     @Override
     public String getFullMessage() {
         if (getEvent().getThrowableProxy() != null) {
@@ -60,6 +66,5 @@ public class LogbackMessage extends AbstractMessage<ILoggingEvent> {
             return getMessage();
         }
     }
-
 
 }

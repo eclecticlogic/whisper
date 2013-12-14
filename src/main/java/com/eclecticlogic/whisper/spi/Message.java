@@ -17,7 +17,7 @@
 package com.eclecticlogic.whisper.spi;
 
 /**
- * @author Karthik & Lydia
+ * @author Karthik Abram
  *
  */
 public interface Message<E> {
@@ -27,6 +27,11 @@ public interface Message<E> {
      */
     long getMessageAge();
 
+    /**
+     * @return Timestamp of this message in milliseconds since epoch. 
+     */
+    long getMessageTime();
+    
     /**
      * @return Message string without parameters (if the underlying logging implementation allows for this).
      */
@@ -46,4 +51,5 @@ public interface Message<E> {
      * @return The fully formatted message (for exceptions, this includes call stack).
      */
     String getFullMessage();
+
 }

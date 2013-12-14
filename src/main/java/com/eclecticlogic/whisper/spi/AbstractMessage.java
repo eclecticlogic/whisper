@@ -18,7 +18,7 @@ package com.eclecticlogic.whisper.spi;
 
 
 /**
- * @author Karthik
+ * @author Karthik Abram
  *
  */
 public abstract class AbstractMessage<E> implements Message<E> {

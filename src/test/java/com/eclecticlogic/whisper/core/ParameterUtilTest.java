@@ -19,7 +19,7 @@ import com.eclecticlogic.whisper.core.ParameterUtil;
 
 
 /**
- * @author Karthik & Lydia.
+ * @author Karthik Abram
  *
  */
 @Test

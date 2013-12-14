@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * m, min, minute, minutes = Minutes
  * s, sec, secs, second, seconds = Seconds
  * h, hour, hours, hr, hrs = Hours
- * @author Karthik & Lydia.
+ * @author Karthik Abram.
  *
  */
 public class ParameterUtil {

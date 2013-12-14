@@ -17,7 +17,7 @@
 package com.eclecticlogic.whisper.core;
 
 /**
- * @author Karthik
+ * @author Karthik Abram
  *
  */
 public class DigestMessage {

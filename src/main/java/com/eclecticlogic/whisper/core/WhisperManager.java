@@ -25,7 +25,7 @@ import com.eclecticlogic.whisper.spi.Message;
 import com.eclecticlogic.whisper.spi.MessageWriter;
 
 /**
- * @author Karthik 
+ * @author Karthik Abram 
  *
  */
 public class WhisperManager<E> extends TimerTask {

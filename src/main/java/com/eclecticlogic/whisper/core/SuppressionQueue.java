@@ -19,14 +19,12 @@ package com.eclecticlogic.whisper.core;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.eclecticlogic.whisper.spi.Message;
-
 /**
  * @author kabram
  * 
  */
 @SuppressWarnings("serial")
-public class SuppressionQueue<E> extends LinkedList<Message<E>> implements Queue<Message<E>> {
+public class SuppressionQueue extends LinkedList<Long> implements Queue<Long> {
 
     private long suppressAfterMillis;
 
@@ -40,7 +38,7 @@ public class SuppressionQueue<E> extends LinkedList<Message<E>> implements Queue
 
 
     @Override
-    public boolean add(Message<E> e) {
+    public boolean add(Long e) {
         // Remove messages that are older than suppression time.
         suppressExpiredMessages();
         return super.add(e);
@@ -48,7 +46,8 @@ public class SuppressionQueue<E> extends LinkedList<Message<E>> implements Queue
 
 
     private void suppressExpiredMessages() {
-        while (size() > 0 && getFirst().getMessageAge() > suppressAfterMillis) {
+        long now = System.currentTimeMillis();
+        while (size() > 0 && (now - getFirst()) > suppressAfterMillis) {
             remove();
         }
     }

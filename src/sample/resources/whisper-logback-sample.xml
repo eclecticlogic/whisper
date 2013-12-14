@@ -12,13 +12,16 @@
 
 
 	<!-- This is the appender used to log and send out error alerts --> 
-	<appender name="errorEmail" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-            by default -->
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - error-email - %msg%n</pattern>
-        </encoder>
-    </appender>
+	<appender name="errorEmail" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>ADDRESS-OF-YOUR-SMTP-HOST</smtpHost>
+		<to>EMAIL-DESTINATION</to>
+		<to>ANOTHER_EMAIL_DESTINATION</to> <!-- additional destinations are possible -->
+		<from>SENDER-EMAIL</from>
+		<subject>TESTING: %logger{20} - %m</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger{35} - %message%n</pattern>
+		</layout>
+	</appender>
 
 
 	<!-- This is the whisper appender that routes error logs to the errorEmail appender -->
@@ -41,17 +44,30 @@
 		<expireAfter>4 minutes</expireAfter>
 		<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
 		suppressed -->
-		<digestFrequency>1 minutes</digestFrequency>
+		<digestFrequency>20 minutes</digestFrequency>
 		
 		<!-- The pass-through appender for the normal case when suppression is not in-force. -->
 		<appender-ref ref="errorEmail" />
 	</appender>
 	
-	<appender name="digest" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="errorDigest" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>ADDRESS-OF-YOUR-SMTP-HOST</smtpHost>
+		<to>EMAIL-DESTINATION</to>
+		<to>ANOTHER_EMAIL_DESTINATION</to> <!-- additional destinations are possible -->
+		<from>SENDER-EMAIL</from>
+		<subject>TESTING: %logger{20} - %m</subject>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date %-5level %logger{35} - %message%n</pattern>
+		</layout>
+	</appender>
+	
+	<!-- Ignore this. -->	
+	<appender name="digest2" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
 			by default -->
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %X{whisper.digest.subject} - %msg%n</pattern>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+				%X{whisper.digest.subject} - %msg%n</pattern>
 		</encoder>
 	</appender>
 	

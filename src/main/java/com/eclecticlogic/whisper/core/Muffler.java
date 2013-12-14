@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.eclecticlogic.whisper.spi.Message;
 
 /**
- * @author Karthik 
+ * @author Karthik Abram
  *
  */
 public class Muffler<E> {
@@ -32,7 +32,7 @@ public class Muffler<E> {
     private AtomicInteger messagesSinceLastDigest = new AtomicInteger();
     private AtomicReference<Message<E>> lastMessage = new AtomicReference<Message<E>>();
 
-    private SuppressionQueue<E> queue = new SuppressionQueue<E>();
+    private SuppressionQueue queue = new SuppressionQueue();
     private WhisperManager<E> manager;
 
 
@@ -59,7 +59,7 @@ public class Muffler<E> {
                 lastMessage.set(message);
             }
         } else {
-            queue.offer(message);
+            queue.offer(message.getMessageTime());
             if (queue.size() > manager.getSuppressionOnMessagesCount()) {
                 // Start suppression
                 queue.clear();
