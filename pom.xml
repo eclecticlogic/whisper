@@ -1,9 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.eclecticlogic</groupId>
 	<artifactId>whisper</artifactId>
+	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<description>Logback appender that suppresses messages of the same kind when they exceed a defined frequency 
+	and sends out a periodic digest of such suppressed messages.</description>
+	<url>https://github.com/eclecticlogic/whisper</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>Repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/eclecticlogic/whisper</url>
+		<connection>https://github.com/eclecticlogic/whisper.git</connection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>kabram</id>
+			<name>Karthik Abram</name>
+			<email>karthik@eclecticlogic.com</email>
+		</developer>
+	</developers>
+	
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -35,7 +63,6 @@
 		</plugins>
 
 	</build>
-
 
 	<dependencies>
 		<dependency>
