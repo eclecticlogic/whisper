@@ -25,6 +25,8 @@ import com.eclecticlogic.whisper.spi.Message;
 import com.eclecticlogic.whisper.spi.MessageWriter;
 
 /**
+ * The core logic is coordinated by this class. It tracks mufflers for various error messages and schedules digests.
+ * 
  * @author Karthik Abram 
  *
  */

@@ -17,6 +17,9 @@
 package com.eclecticlogic.whisper.core;
 
 /**
+ * Each unique log message that was suppressed that will be reported in the periodic digest is modeled as a
+ * DigestMessage.
+ *   
  * @author Karthik Abram
  *
  */

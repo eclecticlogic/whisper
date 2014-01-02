@@ -22,6 +22,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.eclecticlogic.whisper.spi.Message;
 
 /**
+ * Handles the core logic of figuring out if messages should be suppressed.
+ * 
  * @author Karthik Abram
  *
  */
@@ -43,7 +45,9 @@ public class Muffler<E> {
     }
 
     
-
+    /**
+     * @param message Message to log (and possible suppress).
+     */
     public void log(Message<E> message) {
         if (inSuppression) {
             Message<E> msg = lastMessage.get();

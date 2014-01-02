@@ -20,6 +20,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
+ * A queue that keeps all messages that arrive within the suppression trigger period and allows the Muffler to 
+ * determine if suppression should start.
+ * 
  * @author kabram
  * 
  */
@@ -40,12 +43,12 @@ public class SuppressionQueue extends LinkedList<Long> implements Queue<Long> {
     @Override
     public boolean add(Long e) {
         // Remove messages that are older than suppression time.
-        suppressExpiredMessages();
+        removeExpiredMessages();
         return super.add(e);
     }
 
 
-    private void suppressExpiredMessages() {
+    private void removeExpiredMessages() {
         long now = System.currentTimeMillis();
         while (size() > 0 && (now - getFirst()) > suppressAfterMillis) {
             remove();

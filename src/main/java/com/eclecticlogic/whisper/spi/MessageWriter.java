@@ -20,6 +20,7 @@ import com.eclecticlogic.whisper.core.Digest;
 
 
 /**
+ * Every logging appender should expose this interface to log messages that are not suppressed and to send log digests.
  * 
  * @author Karthik Abram 
  *

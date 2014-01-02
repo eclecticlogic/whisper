@@ -17,6 +17,9 @@
 package com.eclecticlogic.whisper.spi;
 
 /**
+ * Every logging implementation's message needs to expose this interface. This is done by wrapping the message in a 
+ * wrapper that implements this interface (and uses AbstractMessage as a convenient base class).
+ * 
  * @author Karthik Abram
  *
  */
