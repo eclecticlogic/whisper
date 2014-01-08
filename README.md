@@ -10,8 +10,83 @@ Whisper currently supports Logback. We hope to release support for log4j and log
 Whisper is available via Maven Central. TBD Details.
 
 ### How do I configure Whisper?
-You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback:
-TBD configuration information
+You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback to 
+handle the most common case of suppressing ERROR logs that are sent via the email appender. 
+
+To configure the Whisper appender, first you must configure two other appenders - the regular email appender for ERROR level logs and a second
+email appender for sending the suppression Digests when suppression is actually in effect. 
+
+```
+<appender name="errorEmail" class="ch.qos.logback.classic.net.SMTPAppender">
+	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+		<level>ERROR</level>
+		<onMatch>ACCEPT</onMatch>
+		<onMismatch>DENY</onMismatch>
+	</filter>
+	<smtpHost>ADDRESS-OF-YOUR-SMTP-HOST</smtpHost>
+	<to>EMAIL-DESTINATION</to>
+	<from>SENDER-EMAIL</from>
+	<subject>TESTING: %logger{20} - %m</subject>
+	<layout class="ch.qos.logback.classic.PatternLayout">
+		<pattern>%date %-5level %logger{35} - %message%n</pattern>
+	</layout>
+</appender>
+
+<appender name="errorDigest" class="ch.qos.logback.classic.net.SMTPAppender">
+	<smtpHost>ADDRESS-OF-YOUR-SMTP-HOST</smtpHost>
+	<to>EMAIL-DESTINATION</to>
+	<from>SENDER-EMAIL</from>
+	<subject>%X{whisper.digest.subject}</subject>
+	<layout class="ch.qos.logback.classic.PatternLayout">
+		<pattern>%date %-5level %logger{35} - %message%n</pattern>
+	</layout>
+</appender>
+``` 
+
+Note the use of `%X{whisper.digest.subject}` for the subject of the digest appender.
+
+We now configure the Whisper appender as shown below:
+
+```
+<appender name="whisper"
+	class="com.eclecticlogic.whisper.logback.WhisperAppender">
+	<!-- Filter out non error logs -->
+	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+		<level>ERROR</level>
+		<onMatch>ACCEPT</onMatch>
+		<onMismatch>DENY</onMismatch>
+	</filter>
+	<!-- This is the name of the logging category to use to send out error digests. This is associated with the 
+	errorDigest appender. -->
+	<digestLoggerName>digest.appender.logger</digestLoggerName>
+	<!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
+	are encountered within a 5 minute window, then suppression should kick in. -->
+	<suppressAfter>3 in 5 minutes</suppressAfter>
+	<!-- expireAfter specifies how much of silence the logger should see for the error message being suppressed 
+	before stopping suppression. --> 
+	<expireAfter>4 minutes</expireAfter>
+	<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
+	suppressed -->
+	<digestFrequency>20 minutes</digestFrequency>
+	
+	<!-- The pass-through appender for the normal case when suppression is not in-force. -->
+	<appender-ref ref="errorEmail" />
+</appender>
+```
+
+The digest logger name is then associated with the digestAppender and the whisper appender is included in the 
+list of default appenders:
+
+```
+<logger name="digest.appender.logger" level="error" additivity="false">
+	<appender-ref ref="errorDigest" />
+</logger>
+
+<root level="debug">
+	<appender-ref ref="whisper" />
+	<appender-ref ref="fileAppender" />
+</root>
+```
 
 ### What is the license?
 Good old [Apache License](http://apache.org/licenses/LICENSE-2.0.html).
