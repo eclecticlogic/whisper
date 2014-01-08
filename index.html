@@ -1,39 +1,57 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Whisper : Logback appender that suppresses error message spam when things go crazy!" />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Whisper by eclecticlogic</title>
+    <title>Whisper</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Whisper</h1>
-        <h2>Logback appender that suppresses error message spam when things go crazy!</h2>
-        <a href="https://github.com/eclecticlogic/whisper" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/eclecticlogic/whisper">View on GitHub</a>
+
+          <h1 id="project_title">Whisper</h1>
+          <h2 id="project_tagline">Logback appender that suppresses error message spam when things go crazy!</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/eclecticlogic/whisper/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/eclecticlogic/whisper/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
 <a name="what-is-whisper" class="anchor" href="#what-is-whisper"><span class="octicon octicon-link"></span></a>What is Whisper?</h3>
 
-<p>Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? You probably felt like a genius that you knew what caused the error before anyone else. But then you realize that you've have a database issue and every request results in an error. And just then a backend process launches and tries to connect to the database and starts spewing all kinds of errors. And all hell breaks loose because your email server is straining under the error email server - all 50,000 of them saying the same thing - some variation of "could not connect to database" from Hibernate, your DAO and service layer!</p>
+<p>Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? 
+You probably felt like a DevOps guru because you knew exactly what caused the error before anyone else. But then you realize that 
+you've got a database issue and every user request from the app results in an error email (possibly more than one). 
+Right at that time a backend process launches and tries to connect to the database and all hell breaks loose because your 
+email server is now straining under the error email deluge - all 50,000 of them saying the same thing - 
+some variation of "could not connect to database"!</p>
 
-<p>You wish you could stop the madness and that's where Whisper comes in. Whisper is an Appender funnel if you will. You configure a frequency above which error messages should be suppressed and Whisper will do just that. While suppression is on, Whisper will send you periodic emails letting you know which messages were suppressed and how many of them since the last digest. When things gets resolved and your error message frequency drops below your configured threshold, suppression is stopped and things resume as normal.</p>
+<p>Perhaps you weren't so fortunate to see this happen in real-time. Perhaps the first time you noticed it was when you got back into work
+and saw the 50,000 new emails awaiting your attention. And as you sit and delete page after page of email, you have this 
+suspicion that perhaps somewhere in those 50,000 emails (all looking alike) there is a one-off error email that may be important and you are 
+going to accidentally delete it.</p>
+
+<p>Whisper is your solution to controlling error email spam. Whisper acts like an Appender funnel. You configure a frequency above 
+which error messages should be suppressed and Whisper will do just that. While suppression is on, Whisper will even send you periodic 
+emails (through an SMTP delegate appender) letting you know which messages were suppressed and how many of them were suppressed 
+since the last digest. When things gets resolved and your error message frequency drops below your configured threshold, 
+suppression is stopped and things resume as normal. And all of this happens on a per email message (not including the timestamp). If you
+diligently parameterized your log messages (SLF4j), then Whisper will even suppress similar messages ignoring parameter variations.</p>
 
 <h3>
 <a name="what-logging-frameworks-does-whisper-support" class="anchor" href="#what-logging-frameworks-does-whisper-support"><span class="octicon octicon-link"></span></a>What Logging frameworks does Whisper support?</h3>
@@ -48,32 +66,97 @@
 <h3>
 <a name="how-do-i-configure-whisper" class="anchor" href="#how-do-i-configure-whisper"><span class="octicon octicon-link"></span></a>How do I configure Whisper?</h3>
 
-<p>You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback:
-TBD configuration information</p>
+<p>You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback to 
+handle the most common case of suppressing ERROR messages that are sent via the email appender. </p>
+
+<p>To configure the Whisper appender, first you must configure two other appenders - the regular email appender for ERROR level logs and a second
+email appender for sending the suppression Digests when suppression is actually in effect. </p>
+
+<pre><code>&lt;appender name="errorEmail" class="ch.qos.logback.classic.net.SMTPAppender"&gt;
+    &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;
+        &lt;level&gt;ERROR&lt;/level&gt;
+        &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+        &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+    &lt;/filter&gt;
+    &lt;smtpHost&gt;ADDRESS-OF-YOUR-SMTP-HOST&lt;/smtpHost&gt;
+    &lt;to&gt;EMAIL-DESTINATION&lt;/to&gt;
+    &lt;from&gt;SENDER-EMAIL&lt;/from&gt;
+    &lt;subject&gt;TESTING: %logger{20} - %m&lt;/subject&gt;
+    &lt;layout class="ch.qos.logback.classic.PatternLayout"&gt;
+        &lt;pattern&gt;%date %-5level %logger{35} - %message%n&lt;/pattern&gt;
+    &lt;/layout&gt;
+&lt;/appender&gt;
+
+&lt;appender name="errorDigest" class="ch.qos.logback.classic.net.SMTPAppender"&gt;
+    &lt;smtpHost&gt;ADDRESS-OF-YOUR-SMTP-HOST&lt;/smtpHost&gt;
+    &lt;to&gt;EMAIL-DESTINATION&lt;/to&gt;
+    &lt;from&gt;SENDER-EMAIL&lt;/from&gt;
+    &lt;subject&gt;%X{whisper.digest.subject}&lt;/subject&gt;
+    &lt;layout class="ch.qos.logback.classic.PatternLayout"&gt;
+        &lt;pattern&gt;%date %-5level %logger{35} - %message%n&lt;/pattern&gt;
+    &lt;/layout&gt;
+&lt;/appender&gt;
+</code></pre>
+
+<p>Note the use of <code>%X{whisper.digest.subject}</code> for the subject of the digest appender.</p>
+
+<p>We now configure the Whisper appender as shown below:</p>
+
+<pre><code>&lt;appender name="whisper"
+    class="com.eclecticlogic.whisper.logback.WhisperAppender"&gt;
+    &lt;!-- Filter out non error logs --&gt;
+    &lt;filter class="ch.qos.logback.classic.filter.LevelFilter"&gt;
+        &lt;level&gt;ERROR&lt;/level&gt;
+        &lt;onMatch&gt;ACCEPT&lt;/onMatch&gt;
+        &lt;onMismatch&gt;DENY&lt;/onMismatch&gt;
+    &lt;/filter&gt;
+    &lt;!-- This is the name of the logging category to use to send out error digests. This is associated with the 
+    errorDigest appender. --&gt;
+    &lt;digestLoggerName&gt;digest.appender.logger&lt;/digestLoggerName&gt;
+    &lt;!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
+    are encountered within a 5 minute window, then suppression should kick in. --&gt;
+    &lt;suppressAfter&gt;3 in 5 minutes&lt;/suppressAfter&gt;
+    &lt;!-- expireAfter specifies how much of silence the logger should see for the error message being suppressed 
+    before stopping suppression. --&gt; 
+    &lt;expireAfter&gt;4 minutes&lt;/expireAfter&gt;
+    &lt;!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
+    suppressed --&gt;
+    &lt;digestFrequency&gt;20 minutes&lt;/digestFrequency&gt;
+
+    &lt;!-- The pass-through appender for the normal case when suppression is not in-force. --&gt;
+    &lt;appender-ref ref="errorEmail" /&gt;
+&lt;/appender&gt;
+</code></pre>
+
+<p>The digest logger name is then associated with the digestAppender and the whisper appender is included in the 
+list of default appenders:</p>
+
+<pre><code>&lt;logger name="digest.appender.logger" level="error" additivity="false"&gt;
+    &lt;appender-ref ref="errorDigest" /&gt;
+&lt;/logger&gt;
+
+&lt;root level="debug"&gt;
+    &lt;appender-ref ref="whisper" /&gt;
+    &lt;appender-ref ref="fileAppender" /&gt;
+&lt;/root&gt;
+</code></pre>
 
 <h3>
 <a name="what-is-the-license" class="anchor" href="#what-is-the-license"><span class="octicon octicon-link"></span></a>What is the license?</h3>
 
 <p>Good old <a href="http://apache.org/licenses/LICENSE-2.0.html">Apache License</a>.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/eclecticlogic/whisper/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/eclecticlogic/whisper/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/eclecticlogic/whisper"></a> is maintained by <a href="https://github.com/eclecticlogic">eclecticlogic</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
     </div>
 
-  
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Whisper maintained by <a href="https://github.com/eclecticlogic">eclecticlogic</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
   </body>
 </html>
