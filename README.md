@@ -1,25 +1,13 @@
 ### What is Whisper?
-Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? 
-You probably felt like a DevOps guru because you knew exactly what caused the error before anyone else. But then you realize that 
-you've got a database issue and every user request from the app results in an error email (possibly more than one). 
-Right at that time a backend process launches and tries to connect to the database and all hell breaks loose because your 
-email server is now straining under the error email deluge - all 50,000 of them saying the same thing - 
-some variation of "could not connect to database"!
+Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? You probably felt like a DevOps guru because you knew exactly what caused the error before anyone else. But then you realize that you've got a database issue and every user request from the app results in an error email (possibly more than one). Right at that time a backend process launches and tries to connect to the database and all hell breaks loose because your email server is now straining under the error email deluge - all 50,000 of them saying the same thing - some variation of "could not connect to database"!
 
-Perhaps you weren't so fortunate to see this happen in real-time. Perhaps the first time you noticed it was when you got back into work
-and saw the 50,000 new emails awaiting your attention. And as you sit and delete page after page of email, you have this 
-suspicion that perhaps somewhere in those 50,000 emails (all looking alike) there is a one-off error email that may be important and you are 
-going to accidentally delete it.
+Perhaps you weren't so fortunate to see this happen in real-time. Perhaps the first time you noticed it was when you got back into work and saw the 50,000 new emails awaiting your attention. And as you sit and delete page after page of email, you have this suspicion that perhaps somewhere in those 50,000 emails (all looking alike) there is a one-off error email that may be important and you are going to accidentally delete it.
 
-Whisper is your solution to controlling error email spam. Whisper acts like an Appender funnel. You configure a frequency above 
-which error messages should be suppressed and Whisper will do just that. While suppression is on, Whisper will even send you periodic 
-emails (through an SMTP delegate appender) letting you know which messages were suppressed and how many of them were suppressed 
-since the last digest. When things gets resolved and your error message frequency drops below your configured threshold, 
-suppression is stopped and things resume as normal. And all of this happens on a per email message (not including the timestamp). If you
-diligently parameterized your log messages (SLF4j), then Whisper will even suppress similar messages ignoring parameter variations.
+Whisper is your solution to controlling error email spam. Whisper acts as a pass through appender to your default SMTP appender for emails.
+When the frequency of a message exceeds the configured threshold, Whisper starts to suppress it. While suppression is on, Whisper will even send you periodic digests letting you know which messages were suppressed and how many of them were suppressed. When things gets resolved and your error message frequency drops, suppression is stopped and things resume as normal. All of this happens on a per log message basis (not including the timestamp and factoring away parameters if you used the parameterized SLF4j log format).
 
 ### What Logging frameworks does Whisper support?
-Whisper currently supports Logback. We hope to release support for log4j and log4jv2 soon. With logback, if your messages are parameterized, Whisper will suppress messages that are the same but only differ based on parameters. This is one more reason to take advantage of sl4j's parameterized log messages.
+Whisper currently supports Logback. We hope to add support for log4j and log4jv2 in the future.
 
 ### How do I get the JAR?
 Whisper is available via Maven Central. TBD Details.
@@ -77,8 +65,7 @@ We now configure the Whisper appender as shown below:
 	<!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
 	are encountered within a 5 minute window, then suppression should kick in. -->
 	<suppressAfter>3 in 5 minutes</suppressAfter>
-	<!-- expireAfter specifies how much of silence the logger should see for the error message being suppressed 
-	before stopping suppression. --> 
+	<!-- expireAfter specifies how much of silence the logger between messages before stopping suppression. --> 
 	<expireAfter>4 minutes</expireAfter>
 	<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
 	suppressed -->
