@@ -14,8 +14,10 @@
 	<packaging>jar</packaging>
 	<version>0.0.1</version>
 
-	<description>Logback appender that suppresses messages of the same kind when they exceed a defined frequency 
-	and sends out a periodic digest of such suppressed messages.</description>
+	<description>
+                     Logback appender that suppresses messages of the same kind when they exceed a defined frequency
+                     	and sends out a periodic digest of such suppressed messages.
+                      </description>
 	<url>https://github.com/eclecticlogic/whisper</url>
 	<licenses>
 		<license>
