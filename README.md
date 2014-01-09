@@ -44,9 +44,10 @@ email appender for sending the suppression Digests when suppression is actually 
 		<pattern>%date %-5level %logger{35} - %message%n</pattern>
 	</layout>
 </appender>
-``` 
+```
 
 Note the use of `%X{whisper.digest.subject}` for the subject of the digest appender.
+
 
 We now configure the Whisper appender as shown below:
 
