@@ -48,6 +48,7 @@ email appender for sending the suppression Digests when suppression is actually 
 
 Note the use of `%X{whisper.digest.subject}` for the subject of the digest appender.
 
+
 We now configure the Whisper appender as shown below:
 
 ```
