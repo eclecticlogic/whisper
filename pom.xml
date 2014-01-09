@@ -2,17 +2,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
+	<!-- This is for Maven central push -->
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
 
-
 	<groupId>com.eclecticlogic</groupId>
 	<artifactId>whisper</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<description>Logback appender that suppresses messages of the same kind when they exceed a defined frequency
                      	and sends out a periodic digest of such suppressed messages.</description>

@@ -10,7 +10,13 @@ When the frequency of a message exceeds the configured threshold, Whisper starts
 Whisper currently supports Logback. We hope to add support for log4j and log4jv2 in the future.
 
 ### How do I get the JAR?
-Whisper is available via Maven Central. TBD Details.
+Whisper is available via Maven Central. 
+
+```
+<groupId>com.eclecticlogic</groupId>
+<artifactId>whisper</artifactId>
+<packaging>jar</packaging>
+```	
 
 ### How do I configure Whisper?
 You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback to 
