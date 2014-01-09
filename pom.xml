@@ -12,7 +12,7 @@
 	<groupId>com.eclecticlogic</groupId>
 	<artifactId>whisper</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<description>Logback appender that suppresses messages of the same kind when they exceed a defined frequency
                      	and sends out a periodic digest of such suppressed messages.</description>
