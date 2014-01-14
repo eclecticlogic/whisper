@@ -16,6 +16,7 @@ Whisper is available via Maven Central.
 <groupId>com.eclecticlogic</groupId>
 <artifactId>whisper</artifactId>
 <packaging>jar</packaging>
+<version>1.0.0</version>
 ```	
 
 ### How do I configure Whisper?
