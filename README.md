@@ -101,3 +101,10 @@ list of default appenders:
 ### What is the license?
 Good old [Apache License](http://apache.org/licenses/LICENSE-2.0.html).
 
+# Release Notes
+
+### v1.0.1
+
+- Fixed issue (NPE on digest run) described [here](https://github.com/eclecticlogic/whisper/issues/1).
+
+
