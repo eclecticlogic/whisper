@@ -1,0 +1,70 @@
+<configuration>
+
+	<!-- This is your primary logger. This will be a file logger in real-world 
+		systems. -->
+	<appender name="fileLogger" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} this is the file logger%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- This is the appender used to log and send out error alerts --> 
+	<appender name="errorEmail" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+            by default -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - error-email - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+	<!-- This is the whisper appender that routes error logs to the errorEmail appender -->
+	<appender name="whisper"
+		class="com.eclecticlogic.whisper.logback.WhisperAppender">
+		<!-- Filter out non error logs -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<!-- This is the name of the logging category to use to send out error digests. This is associated with a 
+	 		specific smtp appender below. -->
+		<digestLoggerName>digest.appender.logger</digestLoggerName>
+		<!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
+		are encountered within a 5 minute window, then suppression should kick in. -->
+		<suppressAfter>3 in 5 minutes</suppressAfter>
+		<!-- expireAfter specifies how much of silence the logger should see for the error message being suppressed 
+		before stopping suppression. --> 
+		<expireAfter>4 minutes</expireAfter>
+		<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
+		suppressed -->
+		<digestFrequency>10 seconds</digestFrequency>
+		
+		<!-- The pass-through appender for the normal case when suppression is not in-force. -->
+		<appender-ref ref="errorEmail" />
+	</appender>
+	
+	<appender name="digest" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %X{whisper.digest.subject} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- The logger name for digest is associated with a specific appender. It is important that additivity be 
+	     set to false otherwise this will also show up in the regular smtp appender and log file. -->
+	<logger name="digest.appender.logger" level="error" additivity="false">
+		<appender-ref ref="digest" />
+	</logger>
+
+	<root level="debug">
+		<appender-ref ref="whisper" />
+		<appender-ref ref="fileLogger" />
+	</root>
+
+
+</configuration>
