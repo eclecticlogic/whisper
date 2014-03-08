@@ -1,4 +1,4 @@
-### What is Whisper?
+# What is Whisper?
 Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? You probably felt like a DevOps guru because you knew exactly what caused the error before anyone else. But then you realize that you've got a database issue and every user request from the app results in an error email (possibly more than one). Right at that time a backend process launches and tries to connect to the database and all hell breaks loose because your email server is now straining under the error email deluge - all 50,000 of them saying the same thing - some variation of "could not connect to database"!
 
 Perhaps you weren't so fortunate to see this happen in real-time. Perhaps the first time you noticed it was when you got back into work and saw the 50,000 new emails awaiting your attention. And as you sit and delete page after page of email, you have this suspicion that perhaps somewhere in those 50,000 emails (all looking alike) there is a one-off error email that may be important and you are going to accidentally delete it.
