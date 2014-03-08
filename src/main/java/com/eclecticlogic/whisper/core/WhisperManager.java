@@ -105,7 +105,7 @@ public class WhisperManager<E> extends TimerTask {
 
 
     public void start(long digestFrequencyInMillis) {
-        digestTimer = new Timer(true);
+        digestTimer = new Timer("whisper-timer", true);
         digestTimer.scheduleAtFixedRate(this, digestFrequencyInMillis, digestFrequencyInMillis);
     }
 

@@ -44,14 +44,14 @@ public class Muffler<E> {
         queue.setSuppressAfter(manager.getSuppressAfter());
     }
 
-    
+
     /**
      * @param message Message to log (and possible suppress).
      */
     public void log(Message<E> message) {
         if (inSuppression) {
             Message<E> msg = lastMessage.get();
-            if (msg != null && lastMessage.get().getMessageAge() > manager.getSuppressionExpirationTime()) {
+            if (msg != null && msg.getMessageAge() > manager.getSuppressionExpirationTime()) {
                 // Suppression ends
                 inSuppression = false;
                 manager.remove(this);
@@ -68,7 +68,7 @@ public class Muffler<E> {
                 // Start suppression
                 queue.clear();
                 inSuppression = true;
-                // Circle back in to invoke suppression behavior. 
+                // Circle back in to invoke suppression behavior.
                 log(message);
             } else {
                 // log
@@ -83,13 +83,17 @@ public class Muffler<E> {
      * @param digest
      */
     public void digest(Digest digest) {
-        DigestMessage dm = new DigestMessage();
+        // Write digest only if we've suppressed something. Without the null check, an error message that is written
+        // just once will cause a NPE (see https://github.com/eclecticlogic/whisper/issues/1)
         Message<E> m = lastMessage.get();
-        dm.setMessage(m.getMessage());
-        dm.setFullMessage(m.getFullMessage());
-        dm.setMessagesSinceLastDigest(messagesSinceLastDigest.get());
-        dm.setMessagesSinceSuppressionStart(messagesSinceSuppressionStart.get());
-        messagesSinceLastDigest.set(0);
-        digest.add(dm);
+        if (m != null) {
+            DigestMessage dm = new DigestMessage();
+            dm.setMessage(m.getMessage());
+            dm.setFullMessage(m.getFullMessage());
+            dm.setMessagesSinceLastDigest(messagesSinceLastDigest.get());
+            dm.setMessagesSinceSuppressionStart(messagesSinceSuppressionStart.get());
+            messagesSinceLastDigest.set(0);
+            digest.add(dm);
+        }
     }
 }
