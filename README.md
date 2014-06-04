@@ -17,7 +17,7 @@ Whisper is available via Maven Central.
 <groupId>com.eclecticlogic</groupId>
 <artifactId>whisper</artifactId>
 <packaging>jar</packaging>
-<version>1.0.0</version>
+<version>1.0.2</version>
 ```	
 
 ### How do I configure Whisper?
@@ -103,6 +103,10 @@ list of default appenders:
 Good old [Apache License](http://apache.org/licenses/LICENSE-2.0.html).
 
 # Release Notes
+
+### v1.0.2
+
+- Fixed issue causing digest to continue to report no suppression as described [here](https://github.com/eclecticlogic/whisper/issues/3).
 
 ### v1.0.1
 
