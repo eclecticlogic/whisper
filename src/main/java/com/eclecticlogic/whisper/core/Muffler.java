@@ -87,13 +87,29 @@ public class Muffler<E> {
         // just once will cause a NPE (see https://github.com/eclecticlogic/whisper/issues/1)
         Message<E> m = lastMessage.get();
         if (m != null) {
-            DigestMessage dm = new DigestMessage();
-            dm.setMessage(m.getMessage());
-            dm.setFullMessage(m.getFullMessage());
-            dm.setMessagesSinceLastDigest(messagesSinceLastDigest.get());
-            dm.setMessagesSinceSuppressionStart(messagesSinceSuppressionStart.get());
-            messagesSinceLastDigest.set(0);
-            digest.add(dm);
+            // Added check to see if any messages have been supressed since last digest otherwise
+            // code sends suppression message indicating nothing happened.
+            // Refer to https://github.com/eclecticlogic/whisper/issues/3
+            if (this.messagesSinceLastDigest.get() == 0) {
+                if (m.getMessageAge() > this.manager.getSuppressionExpirationTime()) {
+                    // Suppression ends
+                    inSuppression = false;
+                    manager.remove(this);
+                    lastMessage.set(null);
+                } else {
+                    // We haven't received any new messages but we are not outside the suppression time either.
+                    // Do nothing.
+                }
+            } else {
+                DigestMessage dm = new DigestMessage();
+                dm.setMessage(m.getMessage());
+                dm.setFullMessage(m.getFullMessage());
+                dm.setMessagesSinceLastDigest(messagesSinceLastDigest.get());
+                dm.setMessagesSinceSuppressionStart(messagesSinceSuppressionStart.get());
+                messagesSinceLastDigest.set(0);
+                digest.add(dm);
+            }
         }
     }
+    
 }

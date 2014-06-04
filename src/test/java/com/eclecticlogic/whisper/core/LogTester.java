@@ -11,6 +11,8 @@
  **/
 package com.eclecticlogic.whisper.core;
 
+import java.util.concurrent.Semaphore;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,29 +24,41 @@ public class LogTester implements Runnable {
 
     private static Logger logger = LoggerFactory.getLogger(LogTester.class);
 
+    private static Semaphore canQuit = new Semaphore(0);
+
 
     @Override
     public void run() {
-        for (int i = 0; i < 600; i++) {
+        for (int i = 0; i < 15; i++) {
             logger.error("Blah error occured for the {} time", i);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
         }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+        }
+
+        logger.error("This should show up in both logs.");
+        canQuit.release();
     }
 
 
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Thread t = new Thread(new LogTester());
         t.setDaemon(true);
         t.start();
 
+        canQuit.acquire();
+
+        // Digests should be written twice and then stop all-together. The last message should appear in the console.
         try {
-            Thread.sleep(10 * 60 * 1000);
+            Thread.sleep(5 * 1000);
         } catch (InterruptedException e) {
         }
     }
