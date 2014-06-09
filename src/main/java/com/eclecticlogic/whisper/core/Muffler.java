@@ -41,6 +41,7 @@ public class Muffler<E> {
     public Muffler(WhisperManager<E> manager, String messageKey) {
         super();
         this.manager = manager;
+        this.messageKey = messageKey;
         queue.setSuppressAfter(manager.getSuppressAfter());
     }
 
