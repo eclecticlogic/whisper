@@ -17,7 +17,7 @@ Whisper is available via Maven Central.
 <groupId>com.eclecticlogic</groupId>
 <artifactId>whisper</artifactId>
 <packaging>jar</packaging>
-<version>1.0.2</version>
+<version>1.0.3</version>
 ```	
 
 ### How do I configure Whisper?
@@ -103,6 +103,10 @@ list of default appenders:
 Good old [Apache License](http://apache.org/licenses/LICENSE-2.0.html).
 
 # Release Notes
+
+### v1.0.3
+
+- Fixed [bug](https://github.com/eclecticlogic/whisper/issues/4) that leaves Muffler in the map
 
 ### v1.0.2
 
