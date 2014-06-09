@@ -81,7 +81,7 @@ public class WhisperManager<E> extends TimerTask {
         String messageKey = message.getCanonicalMessage();
         Muffler<E> muffler = queuesByMessage.get(messageKey);
         if (muffler == null) {
-            muffler = new Muffler<E>(this);
+            muffler = new Muffler<E>(this, messageKey);
             Muffler<E> temp = queuesByMessage.putIfAbsent(messageKey, muffler);
             if (temp != null) {
                 muffler = temp;
@@ -91,8 +91,8 @@ public class WhisperManager<E> extends TimerTask {
     }
 
 
-    public void remove(Muffler<E> muffler) {
-        queuesByMessage.remove(muffler);
+    public void remove(String messageKey) {
+        queuesByMessage.remove(messageKey);
     }
 
 

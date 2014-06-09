@@ -28,7 +28,7 @@ import com.eclecticlogic.whisper.spi.Message;
  *
  */
 public class Muffler<E> {
-
+    private final String messageKey;
     private boolean inSuppression;
     private AtomicInteger messagesSinceSuppressionStart = new AtomicInteger();
     private AtomicInteger messagesSinceLastDigest = new AtomicInteger();
@@ -38,7 +38,7 @@ public class Muffler<E> {
     private WhisperManager<E> manager;
 
 
-    public Muffler(WhisperManager<E> manager) {
+    public Muffler(WhisperManager<E> manager, String messageKey) {
         super();
         this.manager = manager;
         queue.setSuppressAfter(manager.getSuppressAfter());
@@ -54,7 +54,7 @@ public class Muffler<E> {
             if (msg != null && msg.getMessageAge() > manager.getSuppressionExpirationTime()) {
                 // Suppression ends
                 inSuppression = false;
-                manager.remove(this);
+                manager.remove(this.messageKey);
                 // Re-attempt to log this.
                 manager.log(message);
             } else {
@@ -94,7 +94,7 @@ public class Muffler<E> {
                 if (m.getMessageAge() > this.manager.getSuppressionExpirationTime()) {
                     // Suppression ends
                     inSuppression = false;
-                    manager.remove(this);
+                    manager.remove(this.messageKey);
                     lastMessage.set(null);
                 } else {
                     // We haven't received any new messages but we are not outside the suppression time either.
