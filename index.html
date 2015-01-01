@@ -3,33 +3,36 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <title>Whisper by eclecticlogic</title>
   </head>
 
   <body>
-    <header>
+    <div id="container">
       <div class="inner">
-        <h1>Whisper</h1>
-        <h2>Logback appender that suppresses error message spam when the unexpected happens ...</h2>
-        <a href="https://github.com/eclecticlogic/whisper" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
+        <header>
+          <h1>Whisper</h1>
+          <h2>Logback appender that suppresses error message spam when the unexpected happens ...</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/eclecticlogic/whisper/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/eclecticlogic/whisper/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/eclecticlogic/whisper" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
           <h1>
-<a name="what-is-whisper" class="anchor" href="#what-is-whisper"><span class="octicon octicon-link"></span></a>What is Whisper?</h1>
+<a id="what-is-whisper" class="anchor" href="#what-is-whisper" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is Whisper?</h1>
 
 <p>Have you ever had something go wrong in your production server and had your Logback email appender immediately send you an email alert? You probably felt like a DevOps guru because you knew exactly what caused the error before anyone else. But then you realize that you've got a database issue and every user request from the app results in an error email (possibly more than one). Right at that time a backend process launches and tries to connect to the database and all hell breaks loose because your email server is now straining under the error email deluge - all 50,000 of them saying the same thing - some variation of "could not connect to database"!</p>
 
@@ -39,12 +42,12 @@
 When the frequency of a message exceeds the configured threshold, Whisper starts to suppress it. While suppression is on, Whisper will even send you periodic digests letting you know which messages were suppressed and how many of them were suppressed. When things gets resolved and your error message frequency drops, suppression is stopped and things resume as normal. All of this happens on a per log message basis (not including the timestamp and factoring away parameters if you used the parameterized SLF4j log format).</p>
 
 <h3>
-<a name="what-logging-frameworks-does-whisper-support" class="anchor" href="#what-logging-frameworks-does-whisper-support"><span class="octicon octicon-link"></span></a>What Logging frameworks does Whisper support?</h3>
+<a id="what-logging-frameworks-does-whisper-support" class="anchor" href="#what-logging-frameworks-does-whisper-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Logging frameworks does Whisper support?</h3>
 
 <p>Whisper currently supports Logback. We hope to add support for log4j and log4jv2 in the future.</p>
 
 <h3>
-<a name="how-do-i-get-the-jar" class="anchor" href="#how-do-i-get-the-jar"><span class="octicon octicon-link"></span></a>How do I get the JAR?</h3>
+<a id="how-do-i-get-the-jar" class="anchor" href="#how-do-i-get-the-jar" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I get the JAR?</h3>
 
 <p>Whisper is available via Maven Central. </p>
 
@@ -55,7 +58,7 @@ When the frequency of a message exceeds the configured threshold, Whisper starts
 </code></pre>
 
 <h3>
-<a name="how-do-i-configure-whisper" class="anchor" href="#how-do-i-configure-whisper"><span class="octicon octicon-link"></span></a>How do I configure Whisper?</h3>
+<a id="how-do-i-configure-whisper" class="anchor" href="#how-do-i-configure-whisper" aria-hidden="true"><span class="octicon octicon-link"></span></a>How do I configure Whisper?</h3>
 
 <p>You can refer to the whisper-logback-sample.xml under src/sample/resources. Here is the gist of how to configure Whisper for use with Logback to 
 handle the most common case of suppressing ERROR messages that are sent via the email appender. </p>
@@ -132,38 +135,38 @@ list of default appenders:</p>
 </code></pre>
 
 <h3>
-<a name="what-is-the-license" class="anchor" href="#what-is-the-license"><span class="octicon octicon-link"></span></a>What is the license?</h3>
+<a id="what-is-the-license" class="anchor" href="#what-is-the-license" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is the license?</h3>
 
 <p>Good old <a href="http://apache.org/licenses/LICENSE-2.0.html">Apache License</a>.</p>
 
 <h1>
-<a name="release-notes" class="anchor" href="#release-notes"><span class="octicon octicon-link"></span></a>Release Notes</h1>
+<a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release Notes</h1>
 
 <h3>
-<a name="v101" class="anchor" href="#v101"><span class="octicon octicon-link"></span></a>v1.0.1</h3>
+<a id="v101" class="anchor" href="#v101" aria-hidden="true"><span class="octicon octicon-link"></span></a>v1.0.1</h3>
 
 <ul>
 <li>Fixed issue (NPE on digest run) described <a href="https://github.com/eclecticlogic/whisper/issues/1">here</a>.</li>
 </ul>
         </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/eclecticlogic/whisper/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/eclecticlogic/whisper/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+        <footer>
+          Whisper is maintained by <a href="https://github.com/eclecticlogic">eclecticlogic</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-          <p class="repo-owner"><a href="https://github.com/eclecticlogic/whisper"></a> is maintained by <a href="https://github.com/eclecticlogic">eclecticlogic</a>.</p>
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-54980372-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
       </div>
     </div>
-
-  
   </body>
 </html>
