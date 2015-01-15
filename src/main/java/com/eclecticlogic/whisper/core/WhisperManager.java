@@ -79,6 +79,10 @@ public class WhisperManager<E> extends TimerTask {
 
     public void log(Message<E> message) {
         String messageKey = message.getCanonicalMessage();
+        // See https://github.com/eclecticlogic/whisper/issues/6
+        if (messageKey == null) {
+            messageKey = "null"; // ConcurrentHashMap will throw a NPE otherwise.  
+        }
         Muffler<E> muffler = queuesByMessage.get(messageKey);
         if (muffler == null) {
             muffler = new Muffler<E>(this, messageKey);

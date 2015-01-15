@@ -41,7 +41,7 @@
 		<expireAfter>4 minutes</expireAfter>
 		<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
 		suppressed -->
-		<digestFrequency>1 minute</digestFrequency>
+		<digestFrequency>30 seconds</digestFrequency>
 		
 		<!-- The pass-through appender for the normal case when suppression is not in-force. -->
 		<appender-ref ref="errorEmail" />

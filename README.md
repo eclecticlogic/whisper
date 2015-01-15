@@ -17,7 +17,7 @@ Whisper is available via Maven Central.
 <groupId>com.eclecticlogic</groupId>
 <artifactId>whisper</artifactId>
 <packaging>jar</packaging>
-<version>1.0.3</version>
+<version>1.0.4</version>
 ```	
 
 ### How do I configure Whisper?
@@ -73,11 +73,13 @@ We now configure the Whisper appender as shown below:
 	<digestLoggerName>digest.appender.logger</digestLoggerName>
 	<!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
 	are encountered within a 5 minute window, then suppression should kick in. -->
+    <!-- Other expressions: 4 in 30 seconds, 10 in 1 hour, etc. -->
 	<suppressAfter>3 in 5 minutes</suppressAfter>
 	<!-- expireAfter specifies how much of silence the logger between messages before stopping suppression. --> 
 	<expireAfter>4 minutes</expireAfter>
 	<!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
 	suppressed -->
+	<!-- You can also specify the unit as sec, seconds, min, hour, hr, hrs (not beyond hours) -->
 	<digestFrequency>20 minutes</digestFrequency>
 	
 	<!-- The pass-through appender for the normal case when suppression is not in-force. -->
@@ -103,6 +105,10 @@ list of default appenders:
 Good old [Apache License](http://apache.org/licenses/LICENSE-2.0.html).
 
 # Release Notes
+
+### v1.0.4
+
+- Fixed [bug](https://github.com/eclecticlogic/whisper/issues/6) caused when the log message itself is null.
 
 ### v1.0.3
 

@@ -29,8 +29,9 @@ public class LogTester implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 45; i++) {
             logger.error("Blah error occured for the {} time", i);
+            logger.error(null); // Ensure this doesn't break anything.
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
