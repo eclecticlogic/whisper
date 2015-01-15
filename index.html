@@ -54,7 +54,7 @@ When the frequency of a message exceeds the configured threshold, Whisper starts
 <pre><code>&lt;groupId&gt;com.eclecticlogic&lt;/groupId&gt;
 &lt;artifactId&gt;whisper&lt;/artifactId&gt;
 &lt;packaging&gt;jar&lt;/packaging&gt;
-&lt;version&gt;1.0.0&lt;/version&gt;
+&lt;version&gt;1.0.4&lt;/version&gt;
 </code></pre>
 
 <h3>
@@ -109,11 +109,13 @@ email appender for sending the suppression Digests when suppression is actually 
     &lt;digestLoggerName&gt;digest.appender.logger&lt;/digestLoggerName&gt;
     &lt;!--  suppressAfter specifies the criteria to enter suppression. The example below says that if 3 errors of the same kind
     are encountered within a 5 minute window, then suppression should kick in. --&gt;
+    &lt;!-- Other expressions: 4 in 30 seconds, 10 in 1 hour, etc. --&gt;
     &lt;suppressAfter&gt;3 in 5 minutes&lt;/suppressAfter&gt;
     &lt;!-- expireAfter specifies how much of silence the logger between messages before stopping suppression. --&gt; 
     &lt;expireAfter&gt;4 minutes&lt;/expireAfter&gt;
     &lt;!-- digestFrequency specifies how often error email digests should be sent containing statistics on messages 
     suppressed --&gt;
+    &lt;!-- You can also specify the unit as sec, seconds, min, hour, hr, hrs (not beyond hours) --&gt;
     &lt;digestFrequency&gt;20 minutes&lt;/digestFrequency&gt;
 
     &lt;!-- The pass-through appender for the normal case when suppression is not in-force. --&gt;
@@ -141,6 +143,27 @@ list of default appenders:</p>
 
 <h1>
 <a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release Notes</h1>
+
+<h3>
+<a id="v104" class="anchor" href="#v104" aria-hidden="true"><span class="octicon octicon-link"></span></a>v1.0.4</h3>
+
+<ul>
+<li>Fixed <a href="https://github.com/eclecticlogic/whisper/issues/6">bug</a> caused when the log message itself is null.</li>
+</ul>
+
+<h3>
+<a id="v103" class="anchor" href="#v103" aria-hidden="true"><span class="octicon octicon-link"></span></a>v1.0.3</h3>
+
+<ul>
+<li>Fixed <a href="https://github.com/eclecticlogic/whisper/issues/4">bug</a> that leaves Muffler in the map</li>
+</ul>
+
+<h3>
+<a id="v102" class="anchor" href="#v102" aria-hidden="true"><span class="octicon octicon-link"></span></a>v1.0.2</h3>
+
+<ul>
+<li>Fixed issue causing digest to continue to report no suppression as described <a href="https://github.com/eclecticlogic/whisper/issues/3">here</a>.</li>
+</ul>
 
 <h3>
 <a id="v101" class="anchor" href="#v101" aria-hidden="true"><span class="octicon octicon-link"></span></a>v1.0.1</h3>
