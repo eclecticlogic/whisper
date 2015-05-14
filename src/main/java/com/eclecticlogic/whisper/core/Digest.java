@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * This class contains all the messages suppressed since the last report (digest).
- * 
+ * test comment
  * @author Karthik Abram 
  */
 public class Digest {
